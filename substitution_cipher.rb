@@ -35,7 +35,7 @@ module SubstitutionCipher
     def self.encrypt(document, key)
       # encrypt string using a permutation cipher
       lookup_table = (0..127).to_a.shuffle(random: Random.new(key))
-      document.gsub(/./) { |s| lookup_table[s.ord].chr }
+      document.chars.map { |s| lookup_table[s.ord].chr }.join
     end
 
     # Decrypts String document using integer key
@@ -47,7 +47,7 @@ module SubstitutionCipher
       # decrypt string using a permutation cipher
       lookup_table = (0..127).to_a.shuffle(random: Random.new(key))
       reverse_table = lookup_table.sort_by { |index| lookup_table[index] }
-      document.gsub(/./) { |s| reverse_table[s.ord].chr }
+      document.chars.map { |s| reverse_table[s.ord].chr }.join
     end
   end
 end

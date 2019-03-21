@@ -21,13 +21,13 @@ describe 'Test card info encryption' do
   cipher_methods.each_with_index do |method, idx|
     describe "Using #{method} cipher" do
       it 'should encrypt card information' do
-        enc = cipher_modules[idx].encrypt(@cc, @key)
+        enc = cipher_modules[idx].encrypt(@cc.to_s, @key)
         enc.wont_equal @cc.to_s
         enc.wont_be_nil
       end
 
       it 'should decrypt text' do
-        enc = cipher_modules[idx].encrypt(@cc, @key)
+        enc = cipher_modules[idx].encrypt(@cc.to_s, @key)
         dec = cipher_modules[idx].decrypt(enc, @key)
         dec.must_equal @cc.to_s
       end
