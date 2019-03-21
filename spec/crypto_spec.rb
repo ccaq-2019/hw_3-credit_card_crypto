@@ -2,6 +2,7 @@
 
 require_relative '../credit_card'
 require_relative '../substitution_cipher'
+require_relative '../double_trans_cipher.rb'
 require 'minitest/autorun'
 
 describe 'Test card info encryption' do
@@ -11,34 +12,25 @@ describe 'Test card info encryption' do
     @key = 3
   end
 
-  describe 'Using Caesar cipher' do
-    it 'should encrypt card information' do
-      enc = SubstitutionCipher::Caesar.encrypt(@cc, @key)
-      enc.wont_equal @cc.to_s
-      enc.wont_be_nil
-    end
+  cipher_methods = ['Caesar', 'Permutation', 'Double Transposition']
+  cipher_modules = []
+  cipher_modules << SubstitutionCipher::Caesar
+  cipher_modules << SubstitutionCipher::Permutation
+  cipher_modules << DoubleTranspositionCipher
 
-    it 'should decrypt text' do
-      enc = SubstitutionCipher::Caesar.encrypt(@cc, @key)
-      dec = SubstitutionCipher::Caesar.decrypt(enc, @key)
-      dec.must_equal @cc.to_s
-    end
-  end
+  cipher_methods.each_with_index do |method, idx|
+    describe "Using #{method} cipher" do
+      it 'should encrypt card information' do
+        enc = cipher_modules[idx].encrypt(@cc, @key)
+        enc.wont_equal @cc.to_s
+        enc.wont_be_nil
+      end
 
-  describe 'Using Permutation cipher' do
-    it 'should encrypt card information' do
-      enc = SubstitutionCipher::Permutation.encrypt(@cc, @key)
-      enc.wont_equal @cc.to_s
-      enc.wont_be_nil
-    end
-
-    it 'should decrypt text' do
-      enc = SubstitutionCipher::Permutation.encrypt(@cc, @key)
-      dec = SubstitutionCipher::Permutation.decrypt(enc, @key)
-      dec.must_equal @cc.to_s
+      it 'should decrypt text' do
+        enc = cipher_modules[idx].encrypt(@cc, @key)
+        dec = cipher_modules[idx].decrypt(enc, @key)
+        dec.must_equal @cc.to_s
+      end
     end
   end
-
-  # TODO: Add tests for double transposition and modern symmetric key ciphers
-  #       Can you DRY out the tests using metaprogramming? (see lecture slide)
 end
