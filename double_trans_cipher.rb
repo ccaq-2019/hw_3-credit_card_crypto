@@ -46,10 +46,6 @@ module DoubleTranspositionCipher
     arr
   end
 
-  def self.generate_new_key
-    Random.rand(1..10)
-  end
-
   def self.encrypt(document, key)
     # 1. find number of rows/cols such that matrix is almost square
     row, col = decide_row_col(document.to_s)
