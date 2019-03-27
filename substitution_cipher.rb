@@ -4,6 +4,10 @@
 module SubstitutionCipher
   # Caesar Cipher
   module Caesar
+    def self.generate_new_key
+      Random.rand(1..10)
+    end
+
     # Encrypts document using key
     # Arguments:
     #   document: String
@@ -27,6 +31,10 @@ module SubstitutionCipher
 
   # Permutation Cipher
   module Permutation
+    def self.generate_new_key
+      Random.rand(1..10)
+    end
+
     # Encrypts document using key
     # Arguments:
     #   document: String
