@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 require_relative './luhn_validator.rb'
 require 'json'
+require 'rbnacl'
 
+# Credit Card
 class CreditCard
-  # TODO: mixin the LuhnValidator using an 'include' statement
+  # mixin the LuhnValidator using an 'include' statement
   include LuhnValidator
   # instance variables with automatic getter/setter methods
   attr_accessor :number, :expiration_date, :owner, :credit_network
@@ -15,7 +19,7 @@ class CreditCard
   end
 
   # returns json string
-  def to_json
+  def to_json(*_args)
     {
       'credit_card' => {
         'number' => number,
@@ -38,10 +42,7 @@ class CreditCard
 
   # return a hash of the serialized credit card object
   def hash
-    # TODO: implement this method
-    #   - Produce a hash (using default hash method) of the credit card's
-    #     serialized contents.
-    #   - Credit cards with identical information should produce the same hash
+    to_json.hash
   end
 
   # return a cryptographically secure hash
@@ -49,5 +50,6 @@ class CreditCard
     # TODO: implement this method
     #   - Use sha256 from openssl to create a cryptographically secure hash.
     #   - Credit cards with identical information should produce the same hash
+    RbNaCl::Hash.sha256(to_json)
   end
 end
